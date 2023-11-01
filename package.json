@@ -1,10 +1,10 @@
 {
-  "name": "phonebook",
+  "name": "image-finder",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://bartosz-baranski.github.io/goit-react-hw-03-phonebook/",
+  "homepage": "https://bartosz-baranski.github.io/goit-react-hw-03-image-finder/",
   "dependencies": {
-    "notiflix": "^3.2.6",
+    "axios": "^1.6.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-loader-spinner": "^5.4.5",

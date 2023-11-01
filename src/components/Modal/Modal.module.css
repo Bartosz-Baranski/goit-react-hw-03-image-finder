@@ -1,0 +1,18 @@
+.overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.97);
+  height: 100vh;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  z-index: 100;
+}
+.modal_open {
+  max-height: 100vh;
+  max-width: 100vw;
+}
