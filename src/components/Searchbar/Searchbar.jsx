@@ -2,11 +2,17 @@ import { useState } from 'react';
 
 import css from './Searchbar.module.css';
 
-export default function Searchbar({ manuallySearch }) {
-  const [termSearch] = useState('');
+export default function Searchbar({ onSearch }) {
+  const [termSearch, setTermSearch] = useState('');
+
   function search(e) {
     e.preventDeafault();
-    manuallySearch(termSearch);
+    onSearch(termSearch);
+  }
+
+  function handleChange(event) {
+    // event.preventDeafault();
+    setTermSearch(event.target.value);
   }
 
   return (
@@ -23,6 +29,7 @@ export default function Searchbar({ manuallySearch }) {
           value={termSearch}
           autoFocus
           placeholder="Search images and photos"
+          onChange={handleChange}
         />
       </form>
     </header>

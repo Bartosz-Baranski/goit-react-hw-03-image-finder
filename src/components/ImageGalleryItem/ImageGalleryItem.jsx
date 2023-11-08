@@ -1,36 +1,34 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 import Modal from 'components/Modal/Modal';
 import Spinner from 'components/Loader/Loader';
 
-export default function ImageGalleryItem(termSearch, activePage) {
+import css from './ImageGalleryItem.module.css';
+
+export default function ImageGalleryItem({ termSearch, activePage }) {
   const apiKey = '39442093-f355f33fb27509f62e93d1955';
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchData = () => {
-      axios
-        .get(
-          `https://pixabay.com/api/?q=${termSearch}&page=${activePage}&key=${apiKey}&image_type=photo&orientation=horizontal&per_page=12`
-        )
-        .then(response => {
-          setImages(prevImages => {
-            if (!isLoading) {
-              setIsLoading(true);
-              return [...response.data.hits];
-            }
-            return [...prevImages, ...response.data.hits];
-          });
-        })
-        .catch(error => {
-          console.error('Error', error);
-        });
-    };
+  const fetchData = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `https://pixabay.com/api/?q=${termSearch}&page=${activePage}&key=${apiKey}&image_type=photo&orientation=horizontal&per_page=12`
+      );
+      if (!isLoading) {
+        setIsLoading(true);
+      }
 
-    fetchData();
+      setImages(response.data.hits);
+    } catch (error) {
+      console.error('Error', error);
+    }
   }, [termSearch, activePage, isLoading]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const [selectedImageUrl, setSelectedImageUrl] = useState(null);
 
@@ -40,24 +38,21 @@ export default function ImageGalleryItem(termSearch, activePage) {
 
   return (
     <>
+      {images.length === 0 && <Spinner />}
       {images.map(img => (
-        <li key={img.id}>
-          <a
-            href={img.largeImageURL}
+        <li className={css.imageGalleryItem} key={img.id}>
+          <img
+            className={css.imageGalleryItem_image}
+            src={img.webformatURL}
+            alt={img.tags}
             onClick={() => handleClickImg(img.largeImageURL)}
-          >
-            <img
-              src={img.webformatURL}
-              alt={img.tags}
-              onClick={() => handleClickImg(img.largeImageURL)}
-            />
-          </a>
+          />
         </li>
       ))}
-      {isLoading && <Spinner />}
+
       {selectedImageUrl && (
         <Modal
-          imageUrl={selectedImageUrl}
+          largeImageURL={selectedImageUrl}
           onClose={() => setSelectedImageUrl(null)}
         />
       )}
