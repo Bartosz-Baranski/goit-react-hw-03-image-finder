@@ -6,12 +6,12 @@ export default function Searchbar({ onSearch }) {
   const [termSearch, setTermSearch] = useState('');
 
   function search(e) {
-    e.preventDeafault();
+    e.preventDefault();
     onSearch(termSearch);
   }
 
   function handleChange(event) {
-    // event.preventDeafault();
+    event.preventDefault();
     setTermSearch(event.target.value);
   }
 
